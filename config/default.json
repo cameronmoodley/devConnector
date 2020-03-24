@@ -1,3 +1,4 @@
 {
-	"mongoURI": "mongodb+srv://cameron123:cameron123@devconnector-ippqa.mongodb.net/test?retryWrites=true&w=majority"
+	"mongoURI": "mongodb+srv://cameron123:cameron123@devconnector-ippqa.mongodb.net/test?retryWrites=true&w=majority",
+	"jwtSecret": "secrettoken"
 }
