@@ -6,6 +6,7 @@ import { getPosts } from '../../redux/actions/post';
 
 import Spinner from '../layout/Spinner';
 import PostItem from './PostItem';
+import PostForm from './PostsForm';
 
 const Posts = () => {
 	const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const Posts = () => {
 
 	useEffect(() => {
 		dispatch(getPosts());
-	}, [dispatch, post]);
+	}, [dispatch]);
 	return loading ? (
 		<Spinner />
 	) : (
@@ -23,7 +24,7 @@ const Posts = () => {
 			<p className='lead'>
 				<i className='fas fa-user'></i> Welcome to the community
 			</p>
-			{/* Post form */}
+			<PostForm />
 			<div className='posts'>
 				{posts.map((post) => {
 					return <PostItem key={post._id} post={post} />;
