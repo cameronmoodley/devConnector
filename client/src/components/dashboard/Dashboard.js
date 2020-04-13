@@ -3,20 +3,27 @@ import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getCurrentProfile } from './../../redux/actions/profile';
+import {
+	getCurrentProfile,
+	deleteAccount,
+} from './../../redux/actions/profile';
+
+import DashboardActions from './DashboardActions';
 
 import Spinner from '../layout/Spinner';
+import Experience from './Experience';
+import Education from './Education';
 
 const Dashboard = () => {
 	const dispatch = useDispatch();
-	const profile = useSelector((state) => state.profile);
+	const userProfile = useSelector((state) => state.profile);
 	const auth = useSelector((state) => state.auth);
-	const { userProfile, loading } = profile;
+	const { profile, loading } = userProfile;
 	const { user } = auth;
 	useEffect(() => {
 		dispatch(getCurrentProfile());
 	}, [dispatch]);
-	return loading && userProfile === null ? (
+	return loading && profile === null ? (
 		<Spinner />
 	) : (
 		<>
@@ -27,11 +34,28 @@ const Dashboard = () => {
 				Welcome {user && user.name}
 			</p>
 			{profile !== null ? (
-				<>Has </>
+				<>
+					<DashboardActions />
+					<Experience experience={profile.experience} />
+					<Education education={profile.education} />
+					<div className='my-2'>
+						<button
+							className='btn btn-danger'
+							onClick={() => {
+								dispatch(deleteAccount());
+							}}
+						>
+							<i className='fas fa-user-minus'></i> {'    '}
+							Delete My Account
+						</button>
+					</div>
+				</>
 			) : (
 				<>
 					<p>You have not yet set up a profile please add some info</p>
-					<Link to='/create-profile' className='btn btn-primary' />
+					<Link to='/create-profile' className='btn btn-primary my-1'>
+						Create Profile
+					</Link>
 				</>
 			)}
 		</>

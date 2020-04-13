@@ -8,6 +8,7 @@ const config = require('config');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Posts');
 
 // @route  GET api/profile/me
 // @desc   Get current users profile
@@ -154,7 +155,9 @@ router.get('/user/:user_id', async (req, res) => {
 
 router.delete('/', auth, async (req, res) => {
 	try {
-		// @todo - remove users posts
+		// Remove users posts
+		await Post.deleteMany({ user: req.user.id });
+
 		// Remove Profile
 		await Profile.findOneAndRemove({ user: req.user.id });
 		// Remove user
@@ -334,7 +337,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
 router.get('/github/:username', async (req, res) => {
 	try {
 		const uri = encodeURI(
-			`https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+			`https://api.github.com/users/${req.params.username}/repos?per_page=7&sort=created:asc`
 		);
 		const headers = {
 			'user-agent': 'node.js',
